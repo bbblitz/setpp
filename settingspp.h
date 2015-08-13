@@ -3,6 +3,26 @@
 #include <map>
 #include <vector>
 
+#include <typeinfo>
+#include <excpetion>
+
+class SettingException : public exception
+{
+	private long int lastlinenum;
+	private char* lastlinestring;
+	
+	SettingException()
+	SettingException(int num, char* str)
+	{
+		lastlinenum = num;
+		lastlinestring = str;
+	}	
+	
+	virtual const char* what() const throw()
+	{
+		return sprintf("Failed to parse settings near line %d, %s",lastlinenum,lastlinestring);
+	}
+}
 
 class Option
 {
