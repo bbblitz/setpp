@@ -9,7 +9,7 @@
 class SettingException : public exception
 {
 	private long int lastlinenum;
-	private char* lastlinestring;
+	private std::string lastlinestring;
 	
 	SettingException()
 	SettingException(int num, char* str)
@@ -18,15 +18,25 @@ class SettingException : public exception
 		lastlinestring = str;
 	}	
 	
-	virtual const char* what() const throw()
+	virtual const std::string what() const throw()
 	{
-		return sprintf("Failed to parse settings near line %d, %s",lastlinenum,lastlinestring);
+		return  
 	}
 }
 
+enum OPTION_TYPE{
+	OT_NUMBER,
+	OT_STRING,
+	OT_BLOB,
+	OT_TABLE,
+	OT_ARRAY,
+	OT_BOOL,
+};
+
 class Option
 {
-
+	
+	virtual OPTION_TYPE getType() = 0;
 }
 
 class OptionNumber : public Option
