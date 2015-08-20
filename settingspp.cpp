@@ -2,3 +2,6 @@
 #include <ifstream>
 #include <ofstream>
 
+#include "settingspp.h"
+
+OPT

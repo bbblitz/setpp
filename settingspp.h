@@ -9,7 +9,7 @@
 class SettingException : public exception
 {
 	private long int lastlinenum;
-	private std::string lastlinestring;
+	private char* lastlinestring;
 	
 	SettingException()
 	SettingException(int num, char* str)
@@ -18,7 +18,7 @@ class SettingException : public exception
 		lastlinestring = str;
 	}	
 	
-	virtual const std::string what() const throw()
+	virtual const char* what() const throw()
 	{
 		return  
 	}
@@ -35,38 +35,57 @@ enum OPTION_TYPE{
 
 class Option
 {
-	
 	virtual OPTION_TYPE getType() = 0;
 }
 
 class OptionNumber : public Option
 {
-
+	OPTION_TYPE getType();
+	double getDouble();
+	int getInt();
+	float getFloat();
 }
 
 class OptionString : public Option
 {
 
+	OPTION_TYPE getType();
+	std::string getString();
+	char* getString();
 }
 
 class OptionBlob : public Option
 {
 
+	OPTION_TYPE getType();
+	short int* getData();
 }
 
 class OptionTable : public Option
 {
 
+	OPTION_TYPE getType();
+	Option getOption(char* key);
+	Option getOption(std::string key);
+	std::map<char*,Option>getTable();
+	std::map<std::string,Option>getTable();
+	int getNumEntries();
 }
 
 class OptionArray : public Option
 {
 
+	OPTION_TYPE getType();
+	std::vector<Option>getArray();
+	Option* getArray();
+	Option getOption(int num);
 }
 
 class OptionBool : public Option
 {
 
+	OPTION_TYPE getType();
+	bool getBool();
 }
 
 class Setting
