@@ -3,25 +3,21 @@
 #include <map>
 #include <vector>
 
+#include <iterator>
 #include <typeinfo>
 #include <excpetion>
 
 class SettingException : public exception
 {
+	bool lastinfo;
 	private long int lastlinenum;
 	private char* lastlinestring;
-	
-	SettingException()
+	private char* information;	
+	SettingException();
+	SettingException(char* str);
 	SettingException(int num, char* str)
-	{
-		lastlinenum = num;
-		lastlinestring = str;
-	}	
-	
-	virtual const char* what() const throw()
-	{
-		return  
-	}
+	SettingException(int num, char* lastline, char* information);	
+	const char* what() const throw();
 }
 
 enum OPTION_TYPE{
@@ -35,69 +31,119 @@ enum OPTION_TYPE{
 
 class Option
 {
-	virtual OPTION_TYPE getType() = 0;
+
+	public
+	{
+		virtual OPTION_TYPE getType() = 0;
+	}
+
 }
 
 class OptionNumber : public Option
 {
-	OPTION_TYPE getType();
-	double getDouble();
-	int getInt();
-	float getFloat();
+	public
+	{
+		OptionNumber(double);
+		OptionNumber(int);
+		OptionNumber(float);
+
+		OPTION_TYPE getType();
+		double getDouble();
+		int getInt();
+		float getFloat();
+	}
 }
 
 class OptionString : public Option
 {
+	private
+	{
+		char* string;
+	}
 
-	OPTION_TYPE getType();
-	std::string getString();
-	char* getString();
+	public
+	{
+		OptionString();
+		OptionString(char* str);
+		OptionString(std::string str);
+		OPTION_TYPE getType();
+		std::string getString();
+		char* getString();
+	}
 }
 
 class OptionBlob : public Option
 {
+	public
+	{
+		OPTION_TYPE getType();
+		short int* getData();
 
-	OPTION_TYPE getType();
-	short int* getData();
+	}
 }
 
 class OptionTable : public Option
 {
+	private
+	{
+		std::map<char*,Option> optab;
+	}
 
-	OPTION_TYPE getType();
-	Option getOption(char* key);
-	Option getOption(std::string key);
-	std::map<char*,Option>getTable();
-	std::map<std::string,Option>getTable();
-	int getNumEntries();
+
+	public
+	{
+		OptionTable(std::map<char*, Option> table);
+		OptionTable();
+		OPTION_TYPE getType();
+		Option getOption(char* key);
+		Option getOption(std::string key);
+		std::map<char*,Option>getTable();
+		int getNumEntries();
+	}
 }
 
 class OptionArray : public Option
 {
+	private
+	{
+		std::vector<Option> optvec;
+	}
+	public
+	{
+		OptionArray(std::vector<Option> vect);
+		OptionArray();
+		OPTION_TYPE getType();
+		std::vector<Option>getArray();
+		Option* getArray();
+		Option getOption(int num);
 
-	OPTION_TYPE getType();
-	std::vector<Option>getArray();
-	Option* getArray();
-	Option getOption(int num);
+	}
 }
 
 class OptionBool : public Option
 {
-
-	OPTION_TYPE getType();
-	bool getBool();
+	public
+	{
+		OPTION_TYPE getType();
+		bool getBool();
+	}
 }
 
 class Setting
 {
-	private{
+	private
+	{
 
 		std::map<char*,Option> set;
 	}
 
-	public{
+	public
+	{
 
-		Setting::addSetting(char* key); //Option with a blank default
+		//Setting::addSetting(char* key); //Option with a blank default
+
+		Setting();
+		Setting(std::ifstream file);
 
 		/*Number type defaults*/
 		void Setting::addSetting(char* key,int num);
@@ -109,13 +155,13 @@ class Setting
 		void Setting::addSetting(char* key,std::string str);
 
 		/*Data blob type*/
-		void Setting::addSetting(char* key,void* blob);
+		//void Setting::addSetting(char* key,void* blob);
 
 		/*Table type*/
-		void Setting::addSetting(char* key,std::map table);
+		void Setting::addSetting(char* key,std::map<char*, Option> table);
 	
 		/*Array type*/
-		void Setting::addSetting(char* key,std::vector vect);
+		void Setting::addSetting(char* key,std::vector<Option> vect);
 	
 		/*Boolean type*/
 		void Setting::addSetting(char* key,bool val);
@@ -127,9 +173,10 @@ class Setting
 
 		/*Save to a file*/
 		void Setting::saveToFile(std::ofstream file);
+		void Setting::saveToFile(std::ofstream file, bool overwirte = false);
 	
 		/*Load settings from a file*/
-		void Setting::loadFromFile(std::ifstream file, bool overwrite = true);
+		void Setting::loadFromFile(std::ifstream file); 
 
 	}
 	
