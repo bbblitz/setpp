@@ -122,8 +122,15 @@ class OptionArray : public Option
 
 class OptionBool : public Option
 {
+	private
+	{
+		bool optbool;
+	}
+		
 	public
 	{
+		OptionBool(bool val);
+		OptionBool();
 		OPTION_TYPE getType();
 		bool getBool();
 	}

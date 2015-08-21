@@ -9,6 +9,11 @@
 #include "settingspp.h"
 
 
+void throwKeyAlreadyExistsException(std::string key)
+{
+	throw SettingException("Key already exists: " + key);
+}
+
 Setting::Setting()
 {
 	set = std::map<char*, Option>();
@@ -28,9 +33,8 @@ Setting::addSetting(char* key, int num);
 Setting::addSetting(char* key, double num);
 {
 	if(set.find(key) != set.end())
-	{
-		throw SettingException("Key already exists");
-		return;
+	{	
+		throwKeyAlreadyExistsException(key);
 	}
 	set.push_back(OptionNumber(num));
 }
@@ -44,8 +48,7 @@ Setting::addSetting(char* key, char* str);
 {
 	if(set.find(key) != set.end())
 	{
-		throw SettingException("Key already exists");
-		return;
+		throwKeyAlreadyExistsException(key);
 	}
 	set.push_back(OptionString(str));
 }
@@ -59,8 +62,7 @@ Setting::addSetting(char* key, std::map<char*,Option> table);
 {
 	if(set.find(key) != set.end())
 	{
-		trow SettingException("Key already exists");
-		return;
+		throwKeyAlreadyExistsException(key);
 	}
 	set.push_back(OptionTable(table));
 }
@@ -68,4 +70,19 @@ Setting::addSetting(char* key, std::map<char*,Option> table);
 /*Array type*/
 Setting::addSetting(char* key, std::vector<Option> vect)
 {
+	if(set.find(key) != set.end())
+	{
+		throwKeyAlreadyExistsException(key);
+	}
+	set.push_back(OptionTable(table));
+}
 
+/*Boolean type*/
+Setting::addSetting(char* key, bool val)
+{
+	if(set.find(key) != set.end())
+	{
+		throwKeyAlreadyExistsException(key);
+	}
+	set.push_back(OptionBool(table));
+}
