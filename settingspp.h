@@ -20,6 +20,7 @@ class SettingException : public exception
 	const char* what() const throw();
 }
 
+
 enum OPTION_TYPE{
 	OT_NUMBER,
 	OT_STRING,

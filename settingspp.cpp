@@ -14,6 +14,11 @@ void throwKeyAlreadyExistsException(std::string key)
 	throw SettingException("Key already exists: " + key);
 }
 
+void throwKeyDosntExistExcpetion(std::string key)
+{
+	throw SettingException("Key does not exist: " + key);
+}
+
 Setting::Setting()
 {
 	set = std::map<char*, Option>();
@@ -33,8 +38,8 @@ Setting::addSetting(char* key, int num);
 Setting::addSetting(char* key, double num);
 {
 	if(set.find(key) != set.end())
-	{	
-		throwKeyAlreadyExistsException(key);
+	{	  
+		throwKeyAlreadyExistsException(std::string(key));
 	}
 	set.push_back(OptionNumber(num));
 }
@@ -48,7 +53,7 @@ Setting::addSetting(char* key, char* str);
 {
 	if(set.find(key) != set.end())
 	{
-		throwKeyAlreadyExistsException(key);
+		throwKeyAlreadyExistsException(std::string(key));
 	}
 	set.push_back(OptionString(str));
 }
@@ -62,7 +67,7 @@ Setting::addSetting(char* key, std::map<char*,Option> table);
 {
 	if(set.find(key) != set.end())
 	{
-		throwKeyAlreadyExistsException(key);
+		throwKeyAlreadyExistsException(std::string(key));
 	}
 	set.push_back(OptionTable(table));
 }
@@ -72,7 +77,7 @@ Setting::addSetting(char* key, std::vector<Option> vect)
 {
 	if(set.find(key) != set.end())
 	{
-		throwKeyAlreadyExistsException(key);
+		throwKeyAlreadyExistsException(std::string(key));
 	}
 	set.push_back(OptionTable(table));
 }
@@ -82,7 +87,19 @@ Setting::addSetting(char* key, bool val)
 {
 	if(set.find(key) != set.end())
 	{
-		throwKeyAlreadyExistsException(key);
+		throwKeyAlreadyExistsException(std::string(key));
 	}
 	set.push_back(OptionBool(table));
 }
+
+/*Retreive a value*/
+Option Setting::getSetting(char* key)
+{
+	if(set.find(key) == set.end())
+	{
+		throwKeyDosntExistException(std::string(key));	
+	}
+	return set[key];
+}
+
+
