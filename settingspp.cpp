@@ -9,7 +9,7 @@
 /*
  * Exceptions to throw:
  * 	Key already exists
- * 	Key dosen't exist
+ * 	Key does not exist
  * 	No file permissions
  * 	File does not exist
  * 	Failed to open
@@ -21,7 +21,7 @@ void throwKeyAlreadyExistsException(std::string key)
 	throw SettingException("Key already exists: " + key);
 }
 
-void throwKeyDosntExistExcpetion(std::string key)
+void throwKeyDoesNotExistExcpetion(std::string key)
 {
 	throw SettingException("Key does not exist: " + key);
 }
@@ -210,4 +210,24 @@ char* OptionString::getString()
 OptionTable::OptionTable()
 {
 	optab = std::map<char*,Option*>();
+}
+OptionTable::OptionTable(std::map<char*,Option*> table)
+{
+	optab = table;
+}
+OPTION_TYPE OptionTable::getType()
+{
+	return OT_TABLE;
+}
+Option getOption(char* key)
+{
+	if(optab.find(key) == optab.end())
+	{
+		throwKeyDoesNotExistException();
+	}
+	return optab[key];
+}
+Option getOption(std::string key)
+{
+	return getOption(key.c_str());
 }
