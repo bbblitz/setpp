@@ -77,30 +77,30 @@ class OptionBlob : public Option
 class OptionTable : public Option
 {
 	private:
-		std::map<char*,Option> optab;
+		std::map<char*,Option*> optab;
 
 	public:
-		OptionTable(std::map<char*, Option> table);
+		OptionTable(std::map<char*, Option*> table);
 		OptionTable();
 		OPTION_TYPE getType();
 		Option getOption(char* key);
 		Option getOption(std::string key);
-		std::map<char*,Option>getTable();
+		std::map<char*,Option*>getTable();
 		int getNumEntries();
 }
 
 class OptionArray : public Option
 {
 	private:
-		std::vector<Option> optvec;
+		std::vector<Option*> optvec;
 	
 	public:
-		OptionArray(std::vector<Option> vect);
+		OptionArray(std::vector<Option*> vect);
 		OptionArray();
 		OPTION_TYPE getType();
-		std::vector<Option>getArray();
+		std::vector<Option*>getArray();
 		Option* getArray();
-		Option getOption(int num);
+		Option* getOption(int num);
 }
 
 class OptionBool : public Option
@@ -118,10 +118,9 @@ class OptionBool : public Option
 class Setting
 {
 	private:
-		std::map<char*,Option> set;
+		std::map<char*,Option*> set;
 
 	public:
-
 
 		Setting();
 		Setting(std::ifstream file);
@@ -140,11 +139,11 @@ class Setting
 
 		/*Table type*/
 		void Setting::addSetting(char* key,
-				std::map<char*, Option> table);
+				std::map<char*, Option*> table);
 	
 		/*Array type*/
 		void Setting::addSetting(char* key,
-				std::vector<Option> vect);
+				std::vector<Option*> vect);
 	
 		/*Boolean type*/
 		void Setting::addSetting(char* key,bool val);

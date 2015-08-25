@@ -63,7 +63,7 @@ void throwEOFNotExpectedException()
 /*Settings class*/
 Setting::Setting()
 {
-	set = std::map<char*, Option>();
+	set = std::map<char*, Option*>();
 }
 
 Setting::Setting(std::ifstream file);
@@ -163,3 +163,51 @@ OptionNumber::OptionNumber(float n)
 	num = (double)n;
 }
 
+OPTION_TYPE OptionNumber::getType()
+{
+	return OT_NUMBER;
+}
+double OptionNumber::getDouble()
+{
+	return num;
+}
+int OptionNumber::getInt()
+{
+	return (int)num;
+}
+float OptionNumber::getFloat()
+{
+	return (float)num;
+}
+
+/*Class OptionString*/
+OptionString::OptionString()
+{
+	string = "";
+}
+OptionString::OptionString(char* str)
+{
+	string = str;
+}
+OptionString::OptionString(std::string str)
+{
+	string = str.c_str();
+}
+OPTION_TYPE OptionString::getType()
+{
+	return OT_STRING;
+}
+std::string OptionString::getSTring()
+{
+	return std::string(string);
+}
+char* OptionString::getString()
+{
+	return string;
+}
+
+/*Class OptionTable*/
+OptionTable::OptionTable()
+{
+	optab = std::map<char*,Option*>();
+}
