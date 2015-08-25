@@ -59,7 +59,7 @@ Setting::Setting()
 
 Setting::Setting(std::ifstream file);
 {
-	set = std::map<char*, Option>();
+	set = std::map<char*, Option*>();
 	loadFromFile(file);
 }
 
@@ -74,7 +74,8 @@ Setting::addSetting(char* key, double num);
 	{	  
 		throwKeyAlreadyExistsException(std::string(key));
 	}
-	set.push_back(OptionNumber(num));
+	set.insert(std::pair<char*, Option*>(key,new OptionNumber(num)));
+	//set.push_back(OptionNumber(num));
 }
 Setting::addSetting(char* key, float num);
 {
@@ -88,7 +89,8 @@ Setting::addSetting(char* key, char* str);
 	{
 		throwKeyAlreadyExistsException(std::string(key));
 	}
-	set.push_back(OptionString(str));
+	set.insert(std::pair<char*, Option*>(key, new OptionString(str))); 
+	//set.push_back(OptionString(str));
 }
 Setting::addSetting(char* key, std::string str);
 {
@@ -96,23 +98,25 @@ Setting::addSetting(char* key, std::string str);
 }
 
 	/*Table type*/
-Setting::addSetting(char* key, std::map<char*,Option> table);
+Setting::addSetting(char* key, std::map<char*,Option*> table);
 {
 	if(set.find(key) != set.end())
 	{
 		throwKeyAlreadyExistsException(std::string(key));
 	}
-	set.push_back(OptionTable(table));
+	set.insert(std::pair<char*,Option*>(key, new OptionTable(table)));
+	//set.push_back(OptionTable(table));
 }
 
 	/*Array type*/
-Setting::addSetting(char* key, std::vector<Option> vect)
+Setting::addSetting(char* key, std::vector<Option*> vect)
 {
 	if(set.find(key) != set.end())
 	{
 		throwKeyAlreadyExistsException(std::string(key));
 	}
-	set.push_back(OptionTable(table));
+	set.insert(std::pair<char*,Option*>(key, new OptionArray(vect)));
+	//set.push_back(OptionTable(table));
 }
 
 	/*Boolean type*/
@@ -122,7 +126,8 @@ Setting::addSetting(char* key, bool val)
 	{
 		throwKeyAlreadyExistsException(std::string(key));
 	}
-	set.push_back(OptionBool(table));
+	set.insert(std::pair<char*,Option*>(key, new OptionBool(val)));
+	//set.push_back(OptionBool(table));
 }
 
 	/*Retreive a value*/
