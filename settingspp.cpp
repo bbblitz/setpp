@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
-
+#include <sstream>
 #include "settingspp.h"
 
 /*
@@ -41,9 +41,18 @@ void throwFileFailedToOpenException(std::string filepath)
 	throw SettingExcpetion("Failed to open: " + filepath);
 }
 
-void throwFailedToParseFileException(std::string filepath, int line, std::string str)
+void throwFailedToParseFileException(std::string filepath, int line,
+	       	std::string str)
 {
-	throw SettingException("Failed to parse \"" + filepath + "\" at line " + itoa(line) + ", " + std::endl + str);
+	std::ostringstream stream;
+	stream << "Failed to parse \"";
+	stream << filepath;
+	stream << "\" at line ";
+	stream << itoa(line);
+	stream << ", ";
+	stream << std::endl;
+	stream << str;
+	throw SettingException(stream.c_str());
 }
 
 void throwEOFNotExpectedException()

@@ -122,7 +122,6 @@ class Setting
 
 	public:
 
-		//Setting::addSetting(char* key); //Option with a blank default
 
 		Setting();
 		Setting(std::ifstream file);
@@ -140,10 +139,12 @@ class Setting
 		//void Setting::addSetting(char* key,void* blob);
 
 		/*Table type*/
-		void Setting::addSetting(char* key,std::map<char*, Option> table);
+		void Setting::addSetting(char* key,
+				std::map<char*, Option> table);
 	
 		/*Array type*/
-		void Setting::addSetting(char* key,std::vector<Option> vect);
+		void Setting::addSetting(char* key,
+				std::vector<Option> vect);
 	
 		/*Boolean type*/
 		void Setting::addSetting(char* key,bool val);
@@ -155,7 +156,8 @@ class Setting
 
 		/*Save to a file*/
 		void Setting::saveToFile(std::ofstream file);
-		void Setting::saveToFile(std::ofstream file, bool overwirte = false);
+		void Setting::saveToFile(std::ofstream file,
+			       	bool overwirte = false);
 	
 		/*Load settings from a file*/
 		void Setting::loadFromFile(std::ifstream file); 
