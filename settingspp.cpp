@@ -231,3 +231,58 @@ Option getOption(std::string key)
 {
 	return getOption(key.c_str());
 }
+std::map<char*,Option*>getTable()
+{
+	return optab;
+}
+int getNumEntries()
+{
+	return optab.size();
+}
+
+/*Class OptionArray*/
+OptionArray::OptionArray()
+{
+	optvec = std::vector<Option*>();
+}
+OptionArray::OptionArray(std::vector<Option*> vect)
+{
+	optvec = vect;
+}
+OPTION_TYPE OptionArray::getType()
+{
+	return OT_ARRAY;
+}
+std::vector<Option*> getArray()
+{
+	return optvec;
+}
+Option* getArray() //	TO-DO!
+{
+}
+Option* getOption(int num)
+{
+	if(num < array.length())
+	{
+		throwKeyDoesNotExistException();
+	}
+	return optvec[num];
+}
+
+/*Class OptionBool*/
+OptionBool::OptionBool(bool value)
+{
+	optbool = value;
+}
+OptionBool::OptionBool()
+{
+	optbool = false;
+}
+OPTION_TYPE OptionBool::getType()
+{
+	return OT_BOOL;
+}
+bool OptionBool::getBool()
+{
+	return optbool;
+}
