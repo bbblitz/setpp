@@ -1,8 +1,7 @@
-#include <string>
 #include <fstream>
 #include <map>
 #include <vector>
-
+#include <string>
 #include <iterator>
 #include <typeinfo>
 #include <excpetion>
@@ -33,17 +32,16 @@ enum OPTION_TYPE{
 class Option
 {
 
-	public
-	{
+	public:
 		virtual OPTION_TYPE getType() = 0;
-	}
 
 }
 
 class OptionNumber : public Option
 {
-	public
-	{
+	private:
+		double num;
+	public:
 		OptionNumber(double);
 		OptionNumber(int);
 		OptionNumber(float);
@@ -52,47 +50,36 @@ class OptionNumber : public Option
 		double getDouble();
 		int getInt();
 		float getFloat();
-	}
 }
 
 class OptionString : public Option
 {
-	private
-	{
+	private:
 		char* string;
-	}
 
-	public
-	{
+	public:
 		OptionString();
 		OptionString(char* str);
 		OptionString(std::string str);
 		OPTION_TYPE getType();
 		std::string getString();
 		char* getString();
-	}
 }
 
 class OptionBlob : public Option
 {
-	public
-	{
+	public:
 		OPTION_TYPE getType();
 		short int* getData();
 
-	}
 }
 
 class OptionTable : public Option
 {
-	private
-	{
+	private:
 		std::map<char*,Option> optab;
-	}
 
-
-	public
-	{
+	public:
 		OptionTable(std::map<char*, Option> table);
 		OptionTable();
 		OPTION_TYPE getType();
@@ -100,53 +87,40 @@ class OptionTable : public Option
 		Option getOption(std::string key);
 		std::map<char*,Option>getTable();
 		int getNumEntries();
-	}
 }
 
 class OptionArray : public Option
 {
-	private
-	{
+	private:
 		std::vector<Option> optvec;
-	}
-	public
-	{
+	
+	public:
 		OptionArray(std::vector<Option> vect);
 		OptionArray();
 		OPTION_TYPE getType();
 		std::vector<Option>getArray();
 		Option* getArray();
 		Option getOption(int num);
-
-	}
 }
 
 class OptionBool : public Option
 {
-	private
-	{
+	private:
 		bool optbool;
-	}
 		
-	public
-	{
+	public:
 		OptionBool(bool val);
 		OptionBool();
 		OPTION_TYPE getType();
 		bool getBool();
-	}
 }
 
 class Setting
 {
-	private
-	{
-
+	private:
 		std::map<char*,Option> set;
-	}
 
-	public
-	{
+	public:
 
 		//Setting::addSetting(char* key); //Option with a blank default
 
@@ -186,6 +160,5 @@ class Setting
 		/*Load settings from a file*/
 		void Setting::loadFromFile(std::ifstream file); 
 
-	}
 	
 }

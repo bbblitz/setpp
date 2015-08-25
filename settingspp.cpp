@@ -1,14 +1,21 @@
 #include <stdio.h>
-#include <ifstream>
-#include <ofstream>
-
+#include <fstream>
 #include <string>
 #include <map>
 #include <vector>
 
 #include "settingspp.h"
 
-
+/*
+ * Exceptions to throw:
+ * 	Key already exists
+ * 	Key dosen't exist
+ * 	No file permissions
+ * 	File does not exist
+ * 	Failed to open
+ * 	Failed to parse file
+ * 	EOF not expected
+ */
 void throwKeyAlreadyExistsException(std::string key)
 {
 	throw SettingException("Key already exists: " + key);
@@ -19,6 +26,32 @@ void throwKeyDosntExistExcpetion(std::string key)
 	throw SettingException("Key does not exist: " + key);
 }
 
+void throwFilePermissionDeniedException(std::string filename)
+{
+	throw SettingException("File permission denied: " + filename);
+}
+
+void throwFileDoesNotExistException(std::string filepath)
+{
+	throw SettingException("File does not exist: " filepath);
+}
+
+void throwFileFailedToOpenException(std::string filepath)
+{
+	throw SettingExcpetion("Failed to open: " + filepath);
+}
+
+void throwFailedToParseFileException(std::string filepath, int line, std::string str)
+{
+	throw SettingException("Failed to parse \"" + filepath + "\" at line " + itoa(line) + ", " + std::endl + str);
+}
+
+void throwEOFNotExpectedException()
+{
+	throw SettingException("End of file not expected");
+}
+
+/*Settings class*/
 Setting::Setting()
 {
 	set = std::map<char*, Option>();
@@ -30,7 +63,7 @@ Setting::Setting(std::ifstream file);
 	loadFromFile(file);
 }
 
-/*Number type options*/
+	/*Number type options*/
 Setting::addSetting(char* key, int num);
 {
 	addSetting((double)num);
@@ -48,7 +81,7 @@ Setting::addSetting(char* key, float num);
 	addSetting((double)num);
 }
 
-/*String type defaults*/
+	/*String type defaults*/
 Setting::addSetting(char* key, char* str);
 {
 	if(set.find(key) != set.end())
@@ -62,7 +95,7 @@ Setting::addSetting(char* key, std::string str);
 	addSetting(key,str.c_str());
 }
 
-/*Table type*/
+	/*Table type*/
 Setting::addSetting(char* key, std::map<char*,Option> table);
 {
 	if(set.find(key) != set.end())
@@ -72,7 +105,7 @@ Setting::addSetting(char* key, std::map<char*,Option> table);
 	set.push_back(OptionTable(table));
 }
 
-/*Array type*/
+	/*Array type*/
 Setting::addSetting(char* key, std::vector<Option> vect)
 {
 	if(set.find(key) != set.end())
@@ -82,7 +115,7 @@ Setting::addSetting(char* key, std::vector<Option> vect)
 	set.push_back(OptionTable(table));
 }
 
-/*Boolean type*/
+	/*Boolean type*/
 Setting::addSetting(char* key, bool val)
 {
 	if(set.find(key) != set.end())
@@ -92,7 +125,7 @@ Setting::addSetting(char* key, bool val)
 	set.push_back(OptionBool(table));
 }
 
-/*Retreive a value*/
+	/*Retreive a value*/
 Option Setting::getSetting(char* key)
 {
 	if(set.find(key) == set.end())
@@ -102,4 +135,17 @@ Option Setting::getSetting(char* key)
 	return set[key];
 }
 
+/*Class OptionNumber*/
+OptionNumber::OptionNumber(double n)
+{
+	num = n;
+}
+OptionNumber::OptionNumber(int n)
+{
+	num = (double)n;
+}
+OptionNumber::OptionNumber(float n)
+{
+	num = (double)n;
+}
 
