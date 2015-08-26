@@ -6,6 +6,9 @@
 #include <typeinfo>
 #include <excpetion>
 
+#ifndef SETTINGSPP_H
+#define SETTINGSPP_H
+
 class SettingException : public exception
 {
 	bool lastinfo;
@@ -163,3 +166,5 @@ class Setting
 
 	
 }
+
+#endif
